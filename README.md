@@ -1,6 +1,6 @@
 # On Stance Detection in Image Retrieval for Argumentation
 
-This repository includes different attempts to retrive argumentative images from a data set for or against an entered query. The task was proposed in [Touché Task 3: Image Retrival for Arguments](https://webis.de/events/touche-22/shared-task-3.html). The results were published in the reproducability track of the SIGIR conference 2023. 
+This repository includes different attempts to retrieve argumentative images from a data set for or against an entered query. The task was proposed in [Touché Task 3: Image Retrival for Arguments](https://webis.de/events/touche-22/shared-task-3.html). The results were published in the reproducability track of the SIGIR conference 2023. 
 
 ## Setup
 You can use a virtual environment or you use [Docker](https://www.docker.com/101-tutorial) to setup this project. If you are not familiar with Docker, 
