@@ -55,8 +55,8 @@ class ElasticSearchTopicModel(TopicModel):
         topic = kwargs.pop('topic')
         image_ids = None
         if only_judged is not None and only_judged and topic is not None and topic in eval_image_ids.keys():
-            image_ids = eval_image_ids[topic]
-        scores = self.elastic_index.elastic_query(' '.join(query), 400, image_ids=list(image_ids))
+            image_ids = list(eval_image_ids[topic])
+        scores = self.elastic_index.elastic_query(' '.join(query), 400, image_ids=image_ids)
         df = pd.DataFrame(scores, columns=['image_id', 'topic'])
         df.set_index('image_id', drop=True, inplace=True)
 
