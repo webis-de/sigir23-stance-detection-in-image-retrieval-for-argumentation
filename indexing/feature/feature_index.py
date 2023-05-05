@@ -52,7 +52,7 @@ class FeatureIndex:
         else:
             html_sentiment_score = 0
 
-        image_path = DataEntry.load(image_id).png_path
+        image_path = DataEntry.load(image_id).webp_path
         image = image_detection.read_image(image_path)
 
         try:

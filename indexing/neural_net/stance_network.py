@@ -327,7 +327,7 @@ class StanceNetworkV8(StanceNetwork):
         prep = SpacyPreprocessor()
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -416,7 +416,7 @@ class StanceNetworkV8(StanceNetwork):
         query = ' '.join(query)
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -513,7 +513,7 @@ class StanceNetworkV7(StanceNetwork):
         prep = SpacyPreprocessor()
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -588,7 +588,7 @@ class StanceNetworkV7(StanceNetwork):
         query = ' '.join(query)
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -687,7 +687,7 @@ class StanceNetworkV6(StanceNetwork):
         prep = SpacyPreprocessor()
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -757,7 +757,7 @@ class StanceNetworkV6(StanceNetwork):
         query = ' '.join(query)
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -874,7 +874,7 @@ class StanceNetworkV5(StanceNetwork):
         prep = SpacyPreprocessor()
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -948,7 +948,7 @@ class StanceNetworkV5(StanceNetwork):
         fidx = FeatureIndex.load('23826')
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -1132,7 +1132,7 @@ class StanceNetworkV4(StanceNetwork):
         fidx = FeatureIndex.load('23826')
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
@@ -1185,7 +1185,7 @@ class StanceNetworkV4(StanceNetwork):
         fidx = FeatureIndex.load('23826')
         with fidx:
             for image_id, row in data.iterrows():
-                image_path = DataEntry.load(image_id).png_path
+                image_path = DataEntry.load(image_id).webp_path
                 images.append(utils.get_image(image_path, self.IMG_SHAPE))
 
                 ocr_text = fidx.get_image_text(str(image_id))
