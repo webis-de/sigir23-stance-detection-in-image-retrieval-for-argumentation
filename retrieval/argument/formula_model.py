@@ -92,7 +92,12 @@ class FormulaArgumentModel(ArgumentModel):
         for doc_id in topic_relevant.index:
             df.loc[doc_id, :] = self.score(query, doc_id)
 
-        df_norm = df / df.abs().max()
+        df_norm = df.copy()
+        df_max = df.abs().max()
+        for col, max_value in zip(df_norm.columns, df_max):
+            if not max_value == 0:
+                df_norm[col] = df_norm[col] / max_value
+        # df_norm = df / df.abs().max()
 
         if self.weights is None:
             np_weights = np.array([1, 1, 1, 0, 1])
@@ -104,4 +109,8 @@ class FormulaArgumentModel(ArgumentModel):
         for doc_id in topic_relevant.index:
             topic_relevant.loc[doc_id, 'argument'] = (df_norm.loc[doc_id, :].to_numpy() * np_weights).mean()
 
-        return topic_relevant.nlargest(top_k, 'argument', keep='all')
+        if len(topic_relevant) > 0:
+            return topic_relevant.nlargest(top_k, 'argument', keep='all')
+        else:
+            return topic_relevant
+

@@ -60,4 +60,7 @@ class ElasticSearchTopicModel(TopicModel):
         df = pd.DataFrame(scores, columns=['image_id', 'topic'])
         df.set_index('image_id', drop=True, inplace=True)
 
-        return df.nlargest(top_k, 'topic', keep='all')
+        if len(df) > 0:
+            return df.nlargest(top_k, 'topic', keep='all')
+        else:
+            return df

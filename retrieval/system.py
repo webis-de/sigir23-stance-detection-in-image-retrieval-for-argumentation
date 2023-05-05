@@ -69,18 +69,22 @@ class RetrievalSystem:
 
         if top_k < 0:
             top_k = len(topic_scores)
-
-        pro = pd.DataFrame(minmax_scale(pro_scores), columns=pro_scores.columns, index=pro_scores.index)
-        con = pd.DataFrame(minmax_scale(con_scores), columns=con_scores.columns, index=con_scores.index)
-
-        ps = self.topic_weight * pro['topic'] + self.arg_weight * pro['argument'] + self.stance_weight * pro['stance']
-        cs = self.topic_weight * con['topic'] + self.arg_weight * con['argument'] + self.stance_weight * con['stance']
-
         ns = pd.Series([0.0] * top_k, index=['None'] * top_k)
-        ps = pd.concat([ps, ns])
-        cs = pd.concat([cs, ns])
 
-        return [e for e in ps.nlargest(top_k).items()], [e for e in cs.nlargest(top_k).items()]
+        eps = []
+        if len(pro_scores) > 0:
+            pro = pd.DataFrame(minmax_scale(pro_scores), columns=pro_scores.columns, index=pro_scores.index)
+            ps = self.topic_weight * pro['topic'] + self.arg_weight * pro['argument'] + self.stance_weight * pro['stance']
+            ps = pd.concat([ps, ns])
+            eps = [e for e in ps.nlargest(top_k).items()]
+        ens = []
+        if len(con_scores) > 0:
+            con = pd.DataFrame(minmax_scale(con_scores), columns=con_scores.columns, index=con_scores.index)
+            cs = self.topic_weight * con['topic'] + self.arg_weight * con['argument'] + self.stance_weight * con['stance']
+            cs = pd.concat([cs, ns])
+            ens = [e for e in cs.nlargest(top_k).items()]
+
+        return eps, ens
 
     def qrel_scoring(self, method_tag: str, save: bool = True, save_path: Path = None,
                      topics: List[int] = None) -> pd.DataFrame:
@@ -109,6 +113,7 @@ class RetrievalSystem:
             for i, r in enumerate(result_c):
                 data.append([topic.number, 'CON', r[0], i + 1, round(r[1], 6), method_tag])
         df = pd.DataFrame(data, columns=['topic', 'stance', 'image_id', 'rank', 'score', 'method'])
+        df = df.mask(df.eq('None')).dropna()
         if save:
             if save_path is None:
                 save_path = Config.get().output_dir.joinpath('run.txt')

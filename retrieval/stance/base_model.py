@@ -43,6 +43,9 @@ class StanceModel:
             Frames are sorted and reduced to top_k rows
         """
         self.log.debug('start stance process for query %s', query)
+        if len(argument_relevant) == 0:
+            return argument_relevant.copy(), argument_relevant.copy()
+
         argument_relevant.loc[:, 'stance'] = np.nan
         pro_scores = argument_relevant.copy()
         con_scores = argument_relevant.copy()
