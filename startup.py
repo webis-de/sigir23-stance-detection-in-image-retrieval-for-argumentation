@@ -194,7 +194,7 @@ def index_creation(max_images: int = -1, n_jobs: int = -2) -> None:
     fidx = FeatureIndex.create_index(name='complete', max_images=max_images, n_jobs=n_jobs)
     fidx.save()
     log.info('Start term index creation for %s images', max_images)
-    esidx = ElasticSearchIndex(f'ecir_html_ocr_{len(fidx)}')
+    esidx = ElasticSearchIndex(f'ecir_html_ocr_v2')
     esidx.create_index_with_features(fidx)
     log.info('Precalculate data for retrieval process')
     preprocessed_data(fidx, Topic.load_all())
