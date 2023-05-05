@@ -118,7 +118,7 @@ class RetrievalSystem:
 
     @classmethod
     def parse_method_tag(cls, method_tag: str, only_eval_images: bool = False,
-                         index_name: str = '23826', elastic_name: str = 'ecir_html_ocr_v2') -> 'RetrievalSystem':
+                         index_name: str = 'complete', elastic_name: str = 'ecir_html_ocr_v2') -> 'RetrievalSystem':
         """
         Create RetrievalSystem for given method tag.
         Method tag should have format
