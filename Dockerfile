@@ -39,4 +39,9 @@ RUN python3 -c "exec(\"import nltk\nnltk.download('punkt')\")"
 
 COPY . .
 
-ENTRYPOINT ["./scripts/entrypoint.sh"]
+# TIRA stuff
+USER root
+RUN apt install -y --no-install-recommends sudo
+
+# sudo -u user '/home/user/app/scripts/entrypoint.sh /input /output "<method>"'
+# ENTRYPOINT ["./scripts/entrypoint.sh"]
