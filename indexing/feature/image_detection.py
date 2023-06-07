@@ -253,88 +253,101 @@ def text_analysis(image):
     image = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
     preprocessed_image = erode_dilate(get_grayscale(image))
 
-    df = pytesseract.image_to_data(preprocessed_image, output_type=Output.DATAFRAME, lang='eng',
-                                   config='--psm 11', timeout=60)  # Timeout after 60sec
-    df = df.loc[df['conf'] > 0]
+    try:
+        df = pytesseract.image_to_data(preprocessed_image, output_type=Output.DATAFRAME, lang='eng',
+                                       config='--psm 11', timeout=600)  # Timeout after 600sec
+        df = df.loc[df['conf'] > 0]
 
-    text = ""
-    text_area = 0
+        text = ""
+        text_area = 0
 
-    height = image.shape[0]
-    width = image.shape[1]
+        height = image.shape[0]
+        width = image.shape[1]
 
-    n_cols = 8
-    n_rows = 8
-    cols_interval = width / n_cols
-    rows_interval = height / n_rows
+        n_cols = 8
+        n_rows = 8
+        cols_interval = width / n_cols
+        rows_interval = height / n_rows
 
-    text_position_dict = {}
-    for i in range(n_cols * n_rows):
-        text_position_dict[i] = 0
+        text_position_dict = {}
+        for i in range(n_cols * n_rows):
+            text_position_dict[i] = 0
 
-    for index, row in df.iterrows():
-        ocr_text = clean_text(str(row['text']))
-        if ocr_text == '':
-            continue
-        text = text + " " + ocr_text
-        area = row['width'] * row['height']
-        text_area += area
-        x_coord = row['width']/2 + row['left']
-        y_coord = row['height']/2 + row['top']
-        coord_col = x_coord // cols_interval
-        coord_row = y_coord // rows_interval
-        text_box = int((coord_row * n_cols) + coord_col)
-        text_position_dict[text_box] += area
+        for index, row in df.iterrows():
+            ocr_text = clean_text(str(row['text']))
+            if ocr_text == '':
+                continue
+            text = text + " " + ocr_text
+            area = row['width'] * row['height']
+            text_area += area
+            x_coord = row['width']/2 + row['left']
+            y_coord = row['height']/2 + row['top']
+            coord_col = x_coord // cols_interval
+            coord_row = y_coord // rows_interval
+            text_box = int((coord_row * n_cols) + coord_col)
+            text_position_dict[text_box] += area
 
-    # text = clean_text(text)
+        # text = clean_text(text)
 
-    text_area_precentage = text_area / (width * height)
+        text_area_precentage = text_area / (width * height)
 
-    current_area = 0
+        current_area = 0
 
-    left_main_text = width
-    right_main_text = 0
-    top_main_text = height
-    bottom_main_text = 0
+        left_main_text = width
+        right_main_text = 0
+        top_main_text = height
+        bottom_main_text = 0
 
-    for box, area in {k: v for k, v in
-                      sorted(text_position_dict.items(), key=lambda item: item[1], reverse=True)}.items():
-        if current_area > (0.5 * text_area):
-            break
-        current_left = (box % n_cols) * cols_interval
-        current_right = ((box % n_cols) + 1) * cols_interval
-        current_top = (box // n_cols) * rows_interval
-        current_bottom = ((box // n_cols) + 1) * rows_interval
+        for box, area in {k: v for k, v in
+                          sorted(text_position_dict.items(), key=lambda item: item[1], reverse=True)}.items():
+            if current_area > (0.5 * text_area):
+                break
+            current_left = (box % n_cols) * cols_interval
+            current_right = ((box % n_cols) + 1) * cols_interval
+            current_top = (box // n_cols) * rows_interval
+            current_bottom = ((box // n_cols) + 1) * rows_interval
 
-        if left_main_text > current_left:
-            left_main_text = current_left
-        if right_main_text < current_right:
-            right_main_text = current_right
-        if top_main_text > current_top:
-            top_main_text = current_top
-        if bottom_main_text < current_bottom:
-            bottom_main_text = current_bottom
+            if left_main_text > current_left:
+                left_main_text = current_left
+            if right_main_text < current_right:
+                right_main_text = current_right
+            if top_main_text > current_top:
+                top_main_text = current_top
+            if bottom_main_text < current_bottom:
+                bottom_main_text = current_bottom
 
-        current_area += area
+            current_area += area
 
-    if text_area != 0:
-        for box in text_position_dict:
-            text_position_dict[box] = text_position_dict[box] / text_area
+        if text_area != 0:
+            for box in text_position_dict:
+                text_position_dict[box] = text_position_dict[box] / text_area
 
-    text_len = len(text.split(" "))
-    text_sentiment_score = sentiment_detection.sentiment_nltk(text)
+        text_len = len(text.split(" "))
+        text_sentiment_score = sentiment_detection.sentiment_nltk(text)
 
-    return {
-        "text_len": text_len,
-        "text_area_percentage": text_area_precentage,
-        "text_sentiment_score": text_sentiment_score,
-        "text_area_left": left_main_text / width,
-        "text_area_right": right_main_text / width,
-        "text_area_top": top_main_text / height,
-        "text_area_bottom": bottom_main_text / height,
-        "text_position": text_position_dict,
-        "text": text
-    }
+        return {
+            "text_len": text_len,
+            "text_area_percentage": text_area_precentage,
+            "text_sentiment_score": text_sentiment_score,
+            "text_area_left": left_main_text / width,
+            "text_area_right": right_main_text / width,
+            "text_area_top": top_main_text / height,
+            "text_area_bottom": bottom_main_text / height,
+            "text_position": text_position_dict,
+            "text": text
+        }
+    except:
+        return {
+            "text_len": 0,
+            "text_area_percentage": 0.0,
+            "text_sentiment_score": 0.0,
+            "text_area_left": 0,
+            "text_area_right": 0,
+            "text_area_top": 0,
+            "text_area_bottom": 0,
+            "text_position": {},
+            "text": ""
+        }
 
 
 def dominant_color(image):

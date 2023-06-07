@@ -5,7 +5,6 @@ from typing import List
 import pandas as pd
 
 from config import Config
-from evaluation.eval_data import get_df
 from indexing import Topic, FeatureIndex, SpacyPreprocessor
 from .similarity_funcs import alignment_query, context_sentiment, query_frequency
 from ..feature import sentiment_detection
@@ -55,6 +54,7 @@ def preprocess_data(fidx: FeatureIndex, ids: List[str], query: List[str], train:
         if topic is None:
             raise ValueError('No topic defined for trained data preprocess')
 
+        from evaluation.eval_data import get_df
         t_df: pd.DataFrame = get_df().loc[(slice(None), slice(None), topic.number), :]
         t_df = t_df.loc[t_df['Topic_correct'], :]
         data.loc[t_df.index.unique(0), 'topic'] = topic.number

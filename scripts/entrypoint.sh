@@ -11,7 +11,7 @@ echo "Waiting for elasticsearch"
 tail -f ../elastic.log | sed '/Node.*started/ q'
 echo "Elasticsearch started"
 sleep 1
-python3 ./startup.py -i $input -w ./working -f -idx
-python3 startup.py -i $input -w ./working -o $output -f -qrel -mtag "$method"
+python3 ./startup.py -i $input -w ./working -f -idx -njobs 1
+python3 startup.py -i $input -w ./working -o $output -f -qrel -mtag "$method" -njobs 1
 # "webis#1.0:elastic#1.0:formula#1.0:random"
 
