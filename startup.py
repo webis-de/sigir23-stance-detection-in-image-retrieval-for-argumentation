@@ -137,9 +137,9 @@ def handle_args():
         sys.exit(0)
 
     if args['elastic_indexing']:
-        log.info('Start elastic index creation for 23826 images')
+        log.info('Start elastic index creation for complete images')
         esidx = ElasticSearchIndex(f'ecir_html_ocr_v2')
-        esidx.create_index_with_features(FeatureIndex.load('23826'))
+        esidx.create_index_with_features(FeatureIndex.load('complete'))
         sys.exit(0)
 
     if args['qrel']:
