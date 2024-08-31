@@ -19,7 +19,7 @@ tensorflow
 sqlitedict
 Biopython
 pyenchant
-opencv-python==4.5.5.62
+opencv-python==4.8.1.78
 elasticsearch
 tqdm
 tensorflow-hub
